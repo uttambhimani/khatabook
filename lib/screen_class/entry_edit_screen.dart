@@ -12,7 +12,28 @@ class Entry_Edit_Screen extends StatefulWidget {
 
 class _delet_update_screenState extends State<Entry_Edit_Screen> {
   Home_Controller home_controller = Get.put(Home_Controller());
- DbHelper bd DbHelper
+  TextEditingController utxtpname = TextEditingController();
+  TextEditingController utxtamount = TextEditingController();
+  TextEditingController utxtdate = TextEditingController();
+  TextEditingController utxttime = TextEditingController();
+
+  DbHelper db = DbHelper();
+
+  @override
+  void initState() {
+    getData();
+    productGetData();
+    super.initState();
+  }
+   void getData()async{
+     home_controller.AllDataList.value = await db.readData();
+
+   }
+  void productGetData() async {
+    home_controller.productList.value = await db.readData();
+    home_controller.productList.value = await db.productreadData(home_controller.customerData!.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,31 +62,47 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-
                       children: [
                         Icon(Icons.person),
                         Column(
                           children: [
-                            Text("${home_controller.customerData!.name}",style: TextStyle(fontSize: 20),),
+                            Text(
+                              "${home_controller.customerData!.name}",
+                              style: TextStyle(fontSize: 20),
+                            ),
                             Text("${home_controller.entryEditModel!.date}"),
                           ],
                         ),
-                        Text("${home_controller.entryEditModel!.balance}",style: TextStyle(fontSize: 25),),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                      children: [
-                        Text("Runing Balance",style: TextStyle(fontSize: 20),),
-                        Text("${home_controller.entryEditModel!.balance}",style: TextStyle(fontSize: 25),),
+                        Text(
+                          "${home_controller.entryEditModel!.balance}",
+                          style: TextStyle(fontSize: 25),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Product Name",style: TextStyle(fontSize: 20),),
-                        Text("${home_controller.entryEditModel!.poductname}",style: TextStyle(fontSize: 25),),
+                        Text(
+                          "Runing Balance",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "${home_controller.entryEditModel!.balance}",
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "Product Name",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "${home_controller.entryEditModel!.poductname}",
+                          style: TextStyle(fontSize: 25),
+                        ),
                       ],
                     )
                   ],
@@ -78,24 +115,45 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
             )),
             ElevatedButton(
               onPressed: () {
+                utxtpname = TextEditingController(
+                    text: home_controller.entryEditModel!.poductname);
+                utxtamount = TextEditingController(
+                    text: home_controller.entryEditModel!.balance);
+                utxtdate = TextEditingController(
+                    text: home_controller.entryEditModel!.date);
+                utxttime = TextEditingController(
+                    text: home_controller.entryEditModel!.time!);
+
                 Get.defaultDialog(
                     title: "PUDETE | DELELTE",
                     content: Column(
                       children: [
                         TextField(
+                          controller: utxtpname,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Enter Name",
-                          ),
+                              border: OutlineInputBorder(),
+                              hintText: "Customer Product",
+                              prefixIcon: Icon(Icons.person)),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         TextField(
+                          controller: utxtamount,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Moblie No",
-                          ),
+                              border: OutlineInputBorder(),
+                              hintText: "Amount",
+                              prefixIcon: Icon(Icons.currency_rupee)),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextField(
+                          controller: utxtdate,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: "Date",
+                              prefixIcon: Icon(Icons.date_range)),
                         ),
                         Row(
                           children: [
@@ -131,7 +189,16 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                                               child: Text("No")),
                                           TextButton(
                                               onPressed: () {
-                                                DbHelper db = DbHelper();
+                                                db.productupdateData(
+                                                    home_controller
+                                                        .customerData!.id!,
+                                                    utxtpname.text,
+                                                    utxtamount.text,
+                                                    utxtdate.text,
+                                                    utxttime.text);
+
+                                                Get.back();
+                                                productGetData();
                                               },
                                               child: Text("Yes")),
                                         ],
@@ -179,7 +246,11 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                                               child: Text("No")),
                                           TextButton(
                                               onPressed: () {
-                                                DbHelper db = DbHelper();
+                                                db.productdeleteData(
+                                                    home_controller
+                                                        .customerData!.id!);
+                                                productGetData();
+                                                Get.back();
                                               },
                                               child: Text("Yes")),
                                         ],

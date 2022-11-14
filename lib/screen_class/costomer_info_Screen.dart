@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:khatabook/database/db_Helper.dart';
 import 'package:khatabook/model_class/model_class.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controller_class/Home_Controller.dart';
 
@@ -19,11 +21,15 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
   @override
   void initState() {
     getData();
+    productGetdata();
     super.initState();
   }
 
   void getData() async {
     home_controller.AllDataList.value = await db.readData();
+  }
+
+  void productGetdata() async {
     home_controller.productList.value =
     await db.productreadData(home_controller.customerData!.id!);
   }
@@ -48,7 +54,10 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
             ],
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.call)),
+            IconButton(onPressed: () {
+              String number = "tel: ${home_controller.customerData!.namber}";
+              launchUrl(Uri.parse(number));
+            }, icon: Icon(Icons.call)),
           ],
         ),
         body: Column(
@@ -143,7 +152,11 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                         color: Colors.indigo,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        String smss = "sms: ${home_controller.customerData!.namber}";
+                        launchUrl(Uri.parse(smss));
+                        Share.share("your payment day is here plea");
+                      },
                       icon: Icon(
                         Icons.sticky_note_2_outlined,
                         size: 30,
@@ -184,9 +197,12 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                               date: home_controller.productList
                                   .value[index]['date'],
                               poductname
-                              :home_controller.productList.value[index]['name'],
+                                  : home_controller.productList
+                                  .value[index]['name'],
                               time
-                              :home_controller.productList.value[index]['time'],
+                                  : home_controller.productList
+                                  .value[index]['time'],
+                              id: home_controller.productList.value[index]['id'].toString(),
                             );
                             Get.toNamed('entry');
                           },
@@ -194,50 +210,58 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                             child: Card(
                               elevation: 1,
                               child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text("${home_controller.productList
-                                          .value[index]['date']}"),
-                                      SizedBox(height: 5,),
-                                      Text("${home_controller.productList
-                                          .value[index]['time']}"),
-                                    ],
-                                  ),
-                                  Expanded(child: SizedBox(width: 100,)),
-
-                                  Text("${home_controller.productList
-                                      .value[index]['name']}"),
-                                  Expanded(child: SizedBox(width: 35,)),
-
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red.shade200,
-                                      border: Border.all(color: Colors.red),
-                                    ),
-                                    child: Text("${home_controller.productList
-                                        .value[index]['amount']}"),
-
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        color: Colors.green.shade200,
-                                        border: Border.all(color: Colors.green)
-                                    ),
-                                    child: Text("${home_controller.productList
-                                        .value[index]['amount']}"),
-                                  ),
-
-                                ],
-                              ),
+                                  children: [
+                              Column(
+                              children: [
+                              Text("${home_controller.productList
+                                  .value[index]['date']}"),
+                              SizedBox(height: 5,),
+                              Text("${home_controller.productList
+                                  .value[index]['time']}"),
+                              ],
                             ),
-                          ),
+                            Expanded(child: SizedBox(width: 100,)),
+
+                            Text("${home_controller.productList
+                                .value[index]['name']}"),
+                            Expanded(child: SizedBox(width: 35,)),
+
+                            Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade200,
+                                border: Border.all(color: Colors.red),
+                              ),
+                              child: home_controller
+                                  .productList[index]['payment_status'] == 1
+                                  ? Text("${home_controller
+                                  .productList[index]['amount']}",
+                                style: TextStyle(color: Colors.white),)
+                                  : Text(""),
+                            ),
+
+                            Container(
+                              alignment: Alignment.center,
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.green.shade200,
+                                  border: Border.all(color: Colors.green)
+                              ),
+                              child: home_controller
+                                  .productList[index]['payment_status'] == 0
+                                  ? Text("${home_controller
+                                  .productList[index]['amount']}",
+                                style: TextStyle(color: Colors.white),)
+                                  : Text(""),
+                            ),
+                          ],
+                        ),)
+                        ,
+                        )
+                        ,
                         );
                       },
                     ),

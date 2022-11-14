@@ -23,12 +23,17 @@ class _payment_screenState extends State<You_Gave_Screen> {
   @override
   void initState() {
     getData();
+    productgetdata();
     super.initState();
   }
 
   void getData() async {
+    home_controller.AllDataList.value = await db.readData();
+  }
 
-    home_controller.productList.value = await db.readData();
+  void productgetdata() async {
+    home_controller.productList.value =
+        await db.productreadData(home_controller.customerData!.id!);
   }
 
   @override
@@ -163,9 +168,11 @@ class _payment_screenState extends State<You_Gave_Screen> {
                         txtamount.text,
                         txtdate.text,
                         txttime.text,
-                        int.parse(
-                          home_controller.customerData!.id!), 1);
+                        int.parse(home_controller.customerData!.id!),
+                        1);
                     getData();
+                    productgetdata();
+                    Get.back();
                   },
                   child: Text("Submit"),
                   style: ElevatedButton.styleFrom(

@@ -6,7 +6,7 @@ class Model
 }
 class EntryEditModel
 {
-  String? date,time,poductname,balance;
+  String? date,time,poductname,balance,id;
 
-  EntryEditModel({this.date, this.time, this.poductname, this.balance});
+  EntryEditModel({this.date, this.time, this.poductname, this.balance,this.id});
 }

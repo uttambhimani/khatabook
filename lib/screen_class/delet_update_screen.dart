@@ -12,6 +12,21 @@ class Delet_update_screen extends StatefulWidget {
 
 class _delet_update_screenState extends State<Delet_update_screen> {
   Home_Controller home_controller = Get.put(Home_Controller());
+  DbHelper db = DbHelper();
+
+  TextEditingController utxtname = TextEditingController();
+  TextEditingController utxtnamber = TextEditingController();
+  TextEditingController utxtaddres = TextEditingController();
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  void getData() async {
+    home_controller.AllDataList.value = await db.readData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +95,18 @@ class _delet_update_screenState extends State<Delet_update_screen> {
             )),
             ElevatedButton(
               onPressed: () {
+                utxtname = TextEditingController(
+                    text: home_controller.customerData!.name!);
+                utxtnamber = TextEditingController(
+                    text: home_controller.customerData!.namber!);
+                utxtaddres = TextEditingController(
+                    text: home_controller.customerData!.addres!);
                 Get.defaultDialog(
                     title: "PUDETE | DELELTE",
                     content: Column(
                       children: [
                         TextField(
+                          controller: utxtname,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: "Enter Name",
@@ -94,6 +116,7 @@ class _delet_update_screenState extends State<Delet_update_screen> {
                           height: 10,
                         ),
                         TextField(
+                          controller: utxtnamber,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: "Moblie No",
@@ -133,7 +156,13 @@ class _delet_update_screenState extends State<Delet_update_screen> {
                                               child: Text("No")),
                                           TextButton(
                                               onPressed: () {
-                                                DbHelper db = DbHelper();
+                                                db.updateData(
+                                                    home_controller
+                                                        .customerData!.id!,
+                                                    utxtname.text,
+                                                    utxtnamber.text,
+                                                    utxtaddres.text);
+                                                getData();
                                               },
                                               child: Text("Yes")),
                                         ],
@@ -181,8 +210,10 @@ class _delet_update_screenState extends State<Delet_update_screen> {
                                               child: Text("No")),
                                           TextButton(
                                               onPressed: () {
-                                                DbHelper db = DbHelper();
-
+                                                db.deletData(home_controller
+                                                    .customerData!.id!);
+                                                getData();
+                                                Get.back();
                                               },
                                               child: Text("Yes")),
                                         ],

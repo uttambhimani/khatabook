@@ -23,6 +23,7 @@ class _payment_screenState extends State<You_Got_Screen> {
   @override
   void initState() {
     getData();
+    productgetdata();
     super.initState();
   }
 
@@ -30,7 +31,10 @@ class _payment_screenState extends State<You_Got_Screen> {
 
     home_controller.productList.value = await db.readData();
   }
-
+  void productgetdata() async {
+    home_controller.productList.value =
+    await db.productreadData(home_controller.customerData!.id!);
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -166,6 +170,9 @@ class _payment_screenState extends State<You_Got_Screen> {
                         int.parse(
                             home_controller.customerData!.id!), 0);
                     getData();
+                    productgetdata();
+                    Get.back();
+
                   },
                   child: Text("Submit"),
                   style: ElevatedButton.styleFrom(
