@@ -30,8 +30,10 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
   }
 
   void productGetdata() async {
-    home_controller.productList.value =
-    await db.productreadData(home_controller.customerData!.id!);
+    home_controller.productList.value = await db.productreadData(id:home_controller.customerData!.id!);
+
+    home_controller.addition();
+
   }
 
   @override
@@ -54,10 +56,13 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
             ],
           ),
           actions: [
-            IconButton(onPressed: () {
-              String number = "tel: ${home_controller.customerData!.namber}";
-              launchUrl(Uri.parse(number));
-            }, icon: Icon(Icons.call)),
+            IconButton(
+                onPressed: () {
+                  String number =
+                      "tel: ${home_controller.customerData!.namber}";
+                  launchUrl(Uri.parse(number));
+                },
+                icon: Icon(Icons.call)),
           ],
         ),
         body: Column(
@@ -86,9 +91,12 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                             "Total Incom",
                             style: TextStyle(fontSize: 20),
                           ),
-                          Text(
-                            "₹0",
-                            style: TextStyle(fontSize: 27, color: Colors.green),
+                          Obx(
+                            () => Text(
+                              "₹ ${home_controller.totalsum.value}",
+                              style:
+                                  TextStyle(fontSize: 27, color: Colors.green),
+                            ),
                           ),
                         ],
                       ),
@@ -107,9 +115,11 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                             "Total expense",
                             style: TextStyle(fontSize: 20),
                           ),
-                          Text(
-                            "₹0",
-                            style: TextStyle(fontSize: 27, color: Colors.red),
+                          Obx(
+                            ()=> Text(
+                              "₹ ${home_controller.pendingsum.value}",
+                              style: TextStyle(fontSize: 27, color: Colors.red),
+                            ),
                           ),
                         ],
                       ),
@@ -153,7 +163,8 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                       )),
                   IconButton(
                       onPressed: () {
-                        String smss = "sms: ${home_controller.customerData!.namber}";
+                        String smss =
+                            "sms: ${home_controller.customerData!.namber}";
                         launchUrl(Uri.parse(smss));
                         Share.share("your payment day is here plea");
                       },
@@ -185,89 +196,93 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
             ),
             Expanded(
               child: Obx(
-                    () =>
-                    ListView.builder(
-                      itemCount: home_controller.productList.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            home_controller.entryEditModel = EntryEditModel(
-                              balance: home_controller.productList
-                                  .value[index]['amount'],
-                              date: home_controller.productList
-                                  .value[index]['date'],
-                              poductname
-                                  : home_controller.productList
-                                  .value[index]['name'],
-                              time
-                                  : home_controller.productList
-                                  .value[index]['time'],
-                              id: home_controller.productList.value[index]['id'].toString(),
-                            );
-                            Get.toNamed('entry');
-                          },
-                          child: Container(
-                            child: Card(
-                              elevation: 1,
-                              child: Row(
-                                  children: [
-                              Column(
-                              children: [
-                              Text("${home_controller.productList
-                                  .value[index]['date']}"),
-                              SizedBox(height: 5,),
-                              Text("${home_controller.productList
-                                  .value[index]['time']}"),
-                              ],
-                            ),
-                            Expanded(child: SizedBox(width: 100,)),
-
-                            Text("${home_controller.productList
-                                .value[index]['name']}"),
-                            Expanded(child: SizedBox(width: 35,)),
-
-                            Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.red.shade200,
-                                border: Border.all(color: Colors.red),
-                              ),
-                              child: home_controller
-                                  .productList[index]['payment_status'] == 1
-                                  ? Text("${home_controller
-                                  .productList[index]['amount']}",
-                                style: TextStyle(color: Colors.white),)
-                                  : Text(""),
-                            ),
-
-                            Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.green.shade200,
-                                  border: Border.all(color: Colors.green)
-                              ),
-                              child: home_controller
-                                  .productList[index]['payment_status'] == 0
-                                  ? Text("${home_controller
-                                  .productList[index]['amount']}",
-                                style: TextStyle(color: Colors.white),)
-                                  : Text(""),
-                            ),
-                          ],
-                        ),)
-                        ,
-                        )
-                        ,
+                () => ListView.builder(
+                  itemCount: home_controller.productList.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        home_controller.entryEditModel = EntryEditModel(
+                          balance: home_controller.productList.value[index]
+                              ['amount'],
+                          date: home_controller.productList.value[index]
+                              ['date'],
+                          poductname: home_controller.productList.value[index]
+                              ['name'],
+                          time: home_controller.productList.value[index]
+                              ['time'],
+                          id: home_controller.productList.value[index]['id']
+                              .toString(),
                         );
+                        Get.toNamed('entry');
                       },
-                    ),
+                      child: Container(
+                        child: Card(
+                          elevation: 1,
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                      "${home_controller.productList.value[index]['date']}"),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                      "${home_controller.productList.value[index]['time']}"),
+                                ],
+                              ),
+                              Expanded(
+                                  child: SizedBox(
+                                width: 100,
+                              )),
+                              Text(
+                                  "${home_controller.productList.value[index]['name']}"),
+                              Expanded(
+                                  child: SizedBox(
+                                width: 35,
+                              )),
+                              Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade200,
+                                  border: Border.all(color: Colors.red),
+                                ),
+                                child: home_controller.productList[index]
+                                            ['payment_status'] ==
+                                        1
+                                    ? Text(
+                                        "${home_controller.productList[index]['amount']}",
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                                    : Text(""),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.green.shade200,
+                                    border: Border.all(color: Colors.green)),
+                                child: home_controller.productList[index]
+                                            ['payment_status'] ==
+                                        0
+                                    ? Text(
+                                        "${home_controller.productList[index]['amount']}",
+                                        style: TextStyle(color: Colors.white),
+                                      )
+                                    : Text(""),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-
             Row(
               children: [
                 SizedBox(
@@ -289,7 +304,7 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
                   },
                   child: Text("You Got  ₹"),
                   style:
-                  ElevatedButton.styleFrom(primary: Colors.green.shade900),
+                      ElevatedButton.styleFrom(primary: Colors.green.shade900),
                 ),
               ],
             ),

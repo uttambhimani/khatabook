@@ -30,8 +30,9 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
 
    }
   void productGetData() async {
-    home_controller.productList.value = await db.readData();
-    home_controller.productList.value = await db.productreadData(home_controller.customerData!.id!);
+    home_controller.productList.value = await db.productreadData(id: home_controller.customerData!.id!);
+    home_controller.addition();
+    home_controller.homeaddition();
   }
 
   @override
@@ -191,7 +192,7 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                                               onPressed: () {
                                                 db.productupdateData(
                                                     home_controller
-                                                        .customerData!.id!,
+                                                        .entryEditModel!.id!,
                                                     utxtpname.text,
                                                     utxtamount.text,
                                                     utxtdate.text,
@@ -246,9 +247,10 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                                               child: Text("No")),
                                           TextButton(
                                               onPressed: () {
+
                                                 db.productdeleteData(
                                                     home_controller
-                                                        .customerData!.id!);
+                                                        .entryEditModel!.id!);
                                                 productGetData();
                                                 Get.back();
                                               },

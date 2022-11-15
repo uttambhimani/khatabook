@@ -94,13 +94,27 @@ class DbHelper {
     db!.insert("product", {"name": n1, "amount":a1, "date": d1, "time": t1,"client_id":clientId,"payment_status":status});
   }
 
-  Future<List<Map>> productreadData(String id) async {
+  Future<List<Map>> productreadData({String? id}) async {
     db = await Chekdatabase();
-    String query = "SELECT * FROM product where client_id = $id";
+    String query = "";
+    if (id != null)
+      query = "SELECT * FROM product where client_id = $id";
+    else
+      query = "SELECT * FROM product";
+
     List<Map> productlist = await db!.rawQuery(query, null);
 
     return productlist;
   }
+
+  Future<List<Map>> ProductFilterReadData(String? date) async {
+    db = await Chekdatabase();
+    String query = "SELECT * FROM product where date = ?";
+    List<Map> productlist = await db!.rawQuery(query, [date]);
+
+    return productlist;
+  }
+
 
   void productdeleteData(String id) async {
     db = await Chekdatabase();

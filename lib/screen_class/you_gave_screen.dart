@@ -33,7 +33,9 @@ class _payment_screenState extends State<You_Gave_Screen> {
 
   void productgetdata() async {
     home_controller.productList.value =
-        await db.productreadData(home_controller.customerData!.id!);
+        await db.productreadData(id:home_controller.customerData!.id!);
+    home_controller.addition();
+    home_controller.homeaddition();
   }
 
   @override

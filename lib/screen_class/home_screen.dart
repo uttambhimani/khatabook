@@ -18,11 +18,18 @@ class _Home_ScreenState extends State<Home_Screen> {
   @override
   void initState() {
     getData();
+    productgetData();
     super.initState();
   }
 
   void getData() async {
     home_controller.AllDataList.value = await db.readData();
+  }
+
+  void productgetData() async {
+    home_controller.productList.value = await db.productreadData();
+    home_controller.homeaddition();
+    home_controller.addition();
   }
 
   @override
@@ -32,6 +39,16 @@ class _Home_ScreenState extends State<Home_Screen> {
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Text("Khatabook"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.toNamed('filter');
+                },
+                icon: Icon(
+                  Icons.filter_alt,
+                  size: 30,
+                )),
+          ],
         ),
         body: Center(
           child: Column(
@@ -61,10 +78,13 @@ class _Home_ScreenState extends State<Home_Screen> {
                         children: [
                           Column(
                             children: [
-                              Text(
-                                "₹ 0",
-                                style: TextStyle(
-                                    fontSize: 40, color: Colors.green.shade900),
+                              Obx(
+                                () => Text(
+                                  "₹ ${home_controller.greensum.value}",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      color: Colors.green.shade900),
+                                ),
                               ),
                               Text(
                                 "You Will Give",
@@ -74,10 +94,12 @@ class _Home_ScreenState extends State<Home_Screen> {
                           ),
                           Column(
                             children: [
-                              Text(
-                                "₹ 0",
-                                style: TextStyle(
-                                    fontSize: 40, color: Colors.red.shade900),
+                              Obx(
+                                () => Text(
+                                  "₹ ${home_controller.redsum.value}",
+                                  style: TextStyle(
+                                      fontSize: 40, color: Colors.red.shade900),
+                                ),
                               ),
                               Text(
                                 "You Will Get",
@@ -93,7 +115,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                       )),
                       Container(
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed('history');
+                            },
                             child: Text(
                               "VIEW HOSTORY >",
                               style:
@@ -116,8 +140,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                           return InkWell(
                             onTap: () {
                               home_controller.customerData = Model(
-                                  id: home_controller.AllDataList.value[index]
-                                      ['id'].toString(),
+                                  id: home_controller
+                                      .AllDataList.value[index]['id']
+                                      .toString(),
                                   name: home_controller.AllDataList.value[index]
                                       ['name'],
                                   namber: home_controller
@@ -135,9 +160,11 @@ class _Home_ScreenState extends State<Home_Screen> {
                                       "${home_controller.AllDataList.value[index]['name']}"),
                                   subtitle: Text(
                                       "${home_controller.AllDataList.value[index]['mobile']}"),
-                                  trailing: Text(
-                                    "₹0",
-                                    style: TextStyle(fontSize: 25),
+                                  trailing: Obx(
+                                    () => Text(
+                                      "₹ ${home_controller.pendingsum.value}",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
                                   ),
                                   leading: IconButton(
                                     onPressed: () {},
