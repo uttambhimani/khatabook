@@ -22,15 +22,10 @@ class _payment_screenState extends State<You_Got_Screen> {
 
   @override
   void initState() {
-    getData();
     productgetdata();
     super.initState();
   }
 
-  void getData() async {
-
-    home_controller.productList.value = await db.readData();
-  }
   void productgetdata() async {
     home_controller.productList.value =
     await db.productreadData(id:home_controller.customerData!.id!);
@@ -171,7 +166,6 @@ class _payment_screenState extends State<You_Got_Screen> {
                         txttime.text,
                         int.parse(
                             home_controller.customerData!.id!), 0);
-                    getData();
                     productgetdata();
                     Get.back();
 

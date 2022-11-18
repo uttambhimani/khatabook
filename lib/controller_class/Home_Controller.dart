@@ -73,5 +73,36 @@ class Home_Controller extends GetxController{
       }
     }
   }
+
+  //================================================================================+++
+  //================================================================================+++
+
+
+  RxList bookList =[].obs;
+  RxList filterbookList =[].obs;
+
+  void filterserchListData(String query)async{
+    filterbookList = bookList;
+    if(query.isNotEmpty)
+      {
+        List filtersearchdatalist =[].obs;
+
+        for(var search in filterbookList)
+          {
+            if(search["name"].toLowerCase().contains(query.toLowerCase()));
+            {
+              filtersearchdatalist.add(search);
+            }
+          }
+        bookList.value=filtersearchdatalist;
+      }
+    else
+      {
+        DbHelper db =DbHelper();
+
+        bookList.value =await db.readData();
+      }
+  }
+
 }
 

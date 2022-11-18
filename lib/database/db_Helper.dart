@@ -110,6 +110,8 @@ class DbHelper {
   Future<List<Map>> ProductFilterReadData(String? date) async {
     db = await Chekdatabase();
     String query = "SELECT * FROM product where date = ?";
+
+    print(query);
     List<Map> productlist = await db!.rawQuery(query, [date]);
 
     return productlist;

@@ -68,92 +68,104 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
             ),
             Obx(
-              () => Expanded(
-                child: ListView.builder(
-                  itemCount: home_controller.productList.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Container(
-                        height: 70,
-                        width: double.infinity,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                  () =>
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: home_controller.productList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Container(
+                            height: 70,
+                            width: double.infinity,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
                                 children: [
-                                  Container(
-                                    width: 110,
-                                    alignment: Alignment.centerLeft,
-                                    child: Column(
-                                      mainAxisAlignment:
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 110,
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${home_controller.productList[index]['date']}",
+                                          children: [
+                                            Text(
+                                              "${home_controller
+                                                  .productList[index]['date']}",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            Text(
+                                              "${home_controller
+                                                  .productList[index]['time']}",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 70,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "${home_controller
+                                              .productList[index]['name']}",
                                           style: TextStyle(color: Colors.black),
                                         ),
-                                        Text(
-                                          "${home_controller.productList[index]['time']}",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  Container(
-                                    width: 70,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "${home_controller.productList[index]['name']}",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 70,
+                                        alignment: Alignment.center,
+                                        color: Colors.red.shade200,
+                                        child: home_controller
+                                            .productList[index]
+                                        ['payment_status'] ==
+                                            1
+                                            ? Text(
+                                          "${home_controller
+                                              .productList[index]['amount']}",
+                                          style:
+                                          TextStyle(color: Colors.black,),
+                                        )
+                                            : Text(""),
+                                      ),
+                                      Container(
+                                        width: 70,
+                                        alignment: Alignment.center,
+                                        color: Colors.green.shade200,
+                                        child: home_controller
+                                            .productList[index]
+                                        ['payment_status'] ==
+                                            0
+                                            ? Text(
+                                          "${home_controller
+                                              .productList[index]['amount']}",
+                                          style:
+                                          TextStyle(color: Colors.black),
+                                        )
+                                            : Text(""),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 70,
-                                    alignment: Alignment.center,
-                                    color: Colors.red.shade200,
-                                    child: home_controller.productList[index]
-                                                ['payment_status'] ==
-                                            1
-                                        ? Text(
-                                            "${home_controller.productList[index]['amount']}",
-                                            style:
-                                                TextStyle(color: Colors.black,),
-                                          )
-                                        : Text(""),
-                                  ),
-                                  Container(
-                                    width: 70,
-                                    alignment: Alignment.center,
-                                    color: Colors.green.shade200,
-                                    child: home_controller.productList[index]
-                                                ['payment_status'] ==
-                                            0
-                                        ? Text(
-                                            "${home_controller.productList[index]['amount']}",
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          )
-                                        : Text(""),
-                                  ),
-                                ],
-                              )
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+                        );
+                      },
+                    ),
+                  ),
             ),
+
           ],
         ),
       ),

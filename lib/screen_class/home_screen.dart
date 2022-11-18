@@ -40,6 +40,11 @@ class _Home_ScreenState extends State<Home_Screen> {
           backgroundColor: Colors.indigo,
           title: Text("Khatabook"),
           actions: [
+            IconButton(onPressed: (){
+              Get.toNamed("search");
+
+            }, icon: Icon(Icons.search,size: 30,),),
+
             IconButton(
                 onPressed: () {
                   Get.toNamed('filter');

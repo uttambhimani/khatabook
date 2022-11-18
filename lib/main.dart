@@ -8,6 +8,7 @@ import 'package:khatabook/screen_class/entry_edit_screen.dart';
 import 'package:khatabook/screen_class/filter_screen.dart';
 import 'package:khatabook/screen_class/history_screen.dart';
 import 'package:khatabook/screen_class/home_screen.dart';
+import 'package:khatabook/screen_class/seach_screen.dart';
 import 'package:khatabook/screen_class/you_gave_screen.dart';
 import 'package:khatabook/screen_class/you_got_screen.dart';
 
@@ -15,6 +16,7 @@ void main(){
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       routes: {
         '/':(context)=>Home_Screen(),
         'cd':(context)=>Customer_Detail_Screen(),
@@ -25,6 +27,7 @@ void main(){
         'entry':(context)=>Entry_Edit_Screen(),
         'history':(context)=>HistoryScreen(),
         'filter':(context)=>FilterdateScreen(),
+        'search':(context)=>Search_Screen(),
       },
     )
   );

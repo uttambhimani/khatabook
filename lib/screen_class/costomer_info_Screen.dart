@@ -20,18 +20,12 @@ class _Customer_info_ScreenState extends State<Customer_info_Screen> {
 
   @override
   void initState() {
-    getData();
     productGetdata();
     super.initState();
   }
 
-  void getData() async {
-    home_controller.AllDataList.value = await db.readData();
-  }
-
   void productGetdata() async {
     home_controller.productList.value = await db.productreadData(id:home_controller.customerData!.id!);
-
     home_controller.addition();
 
   }

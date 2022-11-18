@@ -19,6 +19,9 @@ class _FilterdateScreenState extends State<FilterdateScreen> {
   void productgateData() async {
     home_controller.productList.value =
     await db.ProductFilterReadData(home_controller.filterdate.value);
+    print(home_controller.productList);
+
+
   }
 
   @override
@@ -182,5 +185,6 @@ class _FilterdateScreenState extends State<FilterdateScreen> {
     if (date != null) {
       home_controller.filterdate.value = DateFormat('dd-MM-yyyy').format(date);
     }
+    productgateData();
   }
 }

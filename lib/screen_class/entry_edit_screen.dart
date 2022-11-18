@@ -198,7 +198,7 @@ class _delet_update_screenState extends State<Entry_Edit_Screen> {
                                                     utxtdate.text,
                                                     utxttime.text);
 
-                                                Get.back();
+                                                Get.offAndToNamed('ci');
                                                 productGetData();
                                               },
                                               child: Text("Yes")),

@@ -21,11 +21,18 @@ class _delet_update_screenState extends State<Delet_update_screen> {
   @override
   void initState() {
     getData();
+    productgetData();
     super.initState();
   }
 
   void getData() async {
     home_controller.AllDataList.value = await db.readData();
+  }
+  void productgetData()async{
+
+    home_controller.productList.value=await db.productreadData();
+    home_controller.homeaddition();
+    home_controller.addition();
   }
 
   @override
@@ -162,6 +169,8 @@ class _delet_update_screenState extends State<Delet_update_screen> {
                                                     utxtname.text,
                                                     utxtnamber.text,
                                                     utxtaddres.text);
+                                                Get.offAndToNamed('/');
+
                                                 getData();
                                               },
                                               child: Text("Yes")),
@@ -212,8 +221,10 @@ class _delet_update_screenState extends State<Delet_update_screen> {
                                               onPressed: () {
                                                 db.deletData(home_controller
                                                     .customerData!.id!);
+                                                db.productdeleteData(home_controller.customerData!.id!);
                                                 getData();
-                                                Get.back();
+                                                productgetData();
+                                                Get.offAndToNamed('/');
                                               },
                                               child: Text("Yes")),
                                         ],
